@@ -14,10 +14,13 @@
       let myValue = 0;
       let myValueTwo = 0;
       let myBLE;
+      let punchBLE;
 
       function setup() {
         // Create a p5ble class
         myBLE = new p5ble();
+
+        punchBLE = new p5ble();
 
         createCanvas(200, 200);
         textSize(20);
@@ -40,27 +43,47 @@
         myCharacteristic = characteristics[0];
         myCharacteristicTwo = characteristics[1];
         // Read the value of the first characteristic
+
+        console.log("Is this characteristic readable: " + myCharacteristic.properties.read);
+        console.log(myCharacteristicTwo.uuid);
         myBLE.read(myCharacteristic, gotValue);
         myBLE.read(myCharacteristicTwo, gotValueTwo);
+
       }
 
       // A function that will be called once got values
       function gotValue(error, value) {
         if (error) console.log('error: ', error);
-        console.log('value: ', value);
+        // console.log('value: ', value);
         myValue = value;
         // After getting a value, call p5ble.read() again to get the value again
-        myBLE.read(myCharacteristic, gotValue);
+        // myBLE.read(myCharacteristic, gotValue);
+        myBLE.startNotifications(myCharacteristic, handleNotifications);
       }
+
+      function handleNotifications(error, value){
+        if (error) console.log('error: ', error);
+        console.log('value: ', value);
+        myValue = value;
+      }
+
 
       // A function that will be called once got values
       function gotValueTwo(error, value) {
         if (error) console.log('error: ', error);
-        console.log('value: ', value);
+        // console.log('value: ', value);
         myValueTwo = value;
         // After getting a value, call p5ble.read() again to get the value again
-        myBLE.read(myCharacteristicTwo, gotValueTwo);
+        // myBLE.read(myCharacteristicTwo, gotValueTwo);
+        myBLE.startNotifications(myCharacteristicTwo, handleNotificationsTwo);
       }
+
+      function handleNotificationsTwo(error, value){
+        if (error) console.log('error: ', error);
+        console.log('value: ', value);
+        myValueTwo = value;
+      }
+
 
       function draw() {
         background(250);

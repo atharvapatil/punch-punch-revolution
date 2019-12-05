@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>Getting started Native Bluetooh web api</title>
+    </head>
+
+    <body>
+      <script>
+  window.addEventListener('DOMContentLoaded', onButtonClick);
+
+
+  async function onButtonClick() {
+
+    let optionalServices = '19b10010-e8f2-537e-4f6c-d104768a1214';
+
+    try {
+      log('Requesting any Bluetooth Device...');
+      const device = await navigator.bluetooth.requestDevice({
+       // filters: [...] <- Prefer filters to save energy & show relevant devices.
+          acceptAllDevices: true,
+          optionalServices: optionalServices});
+
+      log('Connecting to GATT Server...');
+      const server = await device.gatt.connect();
+
+      // Note that we could also get all services that match a specific UUID by
+      // passing it to getPrimaryServices().
+      log('Getting Services...');
+      const services = await server.getPrimaryServices();
+
+      log('Getting Characteristics...');
+      for (const service of services) {
+        console.log('> Service: ' + service.uuid);
+        const characteristics = await service.getCharacteristics();
+
+        characteristics.forEach(characteristic => {
+          console.log('>> Characteristic: ' + characteristic.uuid + ' ' +
+              getSupportedProperties(characteristic));
+        });
+      }
+    } catch(error) {
+      console.log('Argh! ' + error);
+    }
+  }
+
+  /* Utils */
+
+  function getSupportedProperties(characteristic) {
+    let supportedProperties = [];
+    for (const p in characteristic.properties) {
+      if (characteristic.properties[p] === true) {
+        supportedProperties.push(p.toUpperCase());
+      }
+    }
+    return '[' + supportedProperties.join(', ') + ']';
+  }
+
+      </script>
+    </body>
+  </html>
