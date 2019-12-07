@@ -15,21 +15,22 @@ async function connectToPunch() {
   await punchBLE.connect(serviceUuid, gotCharacteristics);
 }
 
-async function gotCharacteristics(error, characteristics) {
+ function gotCharacteristics(error, characteristics) {
   if (error) console.log('error: ', error);
-  await console.log('Connected to Punch');
-  await console.log('characteristics: ', characteristics);
-   punchCharacteristic = await characteristics[0];
+   console.log('Connected to Punch');
+   console.log('characteristics: ', characteristics);
+   punchCharacteristic =  characteristics[0];
 
-  await punchBLE.read(punchCharacteristic, punchVal);
+   punchBLE.read(punchCharacteristic, punchVal);
 }
 
 async function punchVal(error, value) {
-  if (error) console.log('error: ', error);
-  await console.log('Value Notification: ', value);
-   punchValue =  value;
+  if (error) console.error('error: ', error);
+   await console.log('Value Notification: ', value);
+   punchValue =  await value;
   // setInterval(function() {
    punchBLE.startNotifications(punchCharacteristic, handleNotifications);
+   punchBLE.read(punchCharacteristic, punchVal);
   // }, 2000);
 }
 
