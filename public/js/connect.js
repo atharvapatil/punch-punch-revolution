@@ -20,8 +20,8 @@ async function connectToPunch() {
    console.log('Connected to Punch');
    console.log('characteristics: ', characteristics);
    punchCharacteristic =  characteristics[0];
-
-   punchBLE.read(punchCharacteristic, punchVal);
+   punchBLE.startNotifications(punchCharacteristic, handleNotifications);
+   // punchBLE.read(punchCharacteristic, punchVal);
 }
 
 async function punchVal(error, value) {
@@ -29,8 +29,8 @@ async function punchVal(error, value) {
    await console.log('Value Notification: ', value);
    punchValue =  await value;
   // setInterval(function() {
-   punchBLE.startNotifications(punchCharacteristic, handleNotifications);
-   punchBLE.read(punchCharacteristic, punchVal);
+   // punchBLE.startNotifications(punchCharacteristic, handleNotifications);
+   // punchBLE.read(punchCharacteristic, punchVal);
   // }, 2000);
 }
 

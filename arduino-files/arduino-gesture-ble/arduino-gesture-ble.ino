@@ -110,8 +110,11 @@ void setup() {
 void loop() {
   float aX, aY, aZ, gX, gY, gZ;
 
-  BLE.poll();
+//  BLE.poll();
 
+  BLEDevice central = BLE.central();
+
+  
   // wait for significant motion
   while (samplesRead == numSamples) {
     if (IMU.accelerationAvailable()) {
