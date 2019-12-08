@@ -10,27 +10,27 @@ function setup() {
   document.getElementById('button').addEventListener('click', connectToPunch);
 }
 
-async function connectToPunch() {
-  await console.log('Connecting to UUID');
-  await punchBLE.connect(serviceUuid, gotCharacteristics);
+ function connectToPunch() {
+   console.log('Connecting to UUID');
+   punchBLE.connect(serviceUuid, gotCharacteristics);
 }
 
- function gotCharacteristics(error, characteristics) {
+ async function gotCharacteristics(error, characteristics) {
   if (error) console.log('error: ', error);
    console.log('Connected to Punch');
    console.log('characteristics: ', characteristics);
-   punchCharacteristic =  characteristics[0];
-   punchBLE.startNotifications(punchCharacteristic, handleNotifications);
-   // punchBLE.read(punchCharacteristic, punchVal);
+   punchCharacteristic = await characteristics[0];
+   // punchBLE.startNotifications(punchCharacteristic, handleNotifications);
+   punchBLE.read(punchCharacteristic, punchVal);
 }
 
-async function punchVal(error, value) {
+ async function punchVal(error, value) {
   if (error) console.error('error: ', error);
-   await console.log('Value Notification: ', value);
-   punchValue =  await value;
+    console.log('Value Notification: ', value);
+   punchValue = await value;
   // setInterval(function() {
    // punchBLE.startNotifications(punchCharacteristic, handleNotifications);
-   // punchBLE.read(punchCharacteristic, punchVal);
+   punchBLE.read(punchCharacteristic, punchVal);
   // }, 2000);
 }
 

@@ -13,7 +13,7 @@
 
 BLEService punchService("19b10010-e8f2-537e-4f6c-d104768a1214");
 
-BLEByteCharacteristic punchCharacteristic("6635d693-9ad2-408e-ad48-4d8f88810dee", BLERead | BLENotify);
+BLEIntCharacteristic punchCharacteristic("6635d693-9ad2-408e-ad48-4d8f88810dee", BLERead | BLENotify);
 
 
 const float accelerationThreshold = 2.5; // threshold of significant in G's
@@ -110,9 +110,9 @@ void setup() {
 void loop() {
   float aX, aY, aZ, gX, gY, gZ;
 
-//  BLE.poll();
+  BLE.poll();
 
-  BLEDevice central = BLE.central();
+//  BLEDevice central = BLE.central();
 
   
   // wait for significant motion
@@ -192,7 +192,7 @@ void loop() {
           string_value = "This is a hook";
           Serial.println(string_value);
           punchCharacteristic.writeValue(2);
-        } else {
+        } else { 
           highest_value = uppercut_value;
           string_value = "This is a uppercut";
           Serial.println(string_value);
