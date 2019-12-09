@@ -6,6 +6,10 @@ let jab_count = 0;
 let cross_count = 0;
 let hook_count = 0;
 let uppercut_count = 0;
+let jab_old = 0;
+let cross_old = 0;
+let hook_old = 0;
+let uppercut_old = 0;
 let data_array = [];
 
 
@@ -20,7 +24,7 @@ function setup() {
   // serial.on('connected', serverConnected); // callback for connecting to the server
   // serial.on('open', portOpen);        // callback for the port opening
   serial.on('data', serialEvent); // callback for when new data arrives
-  // serial.on('error', serialError);    // callback for errors
+  serial.on('error', serialError);    // callback for errors
   // serial.on('close', portClose);      // callback for the port closing
   //
   serial.list(); // list the serial ports
@@ -54,23 +58,25 @@ function serialEvent() {
   let outputGesture = largestNumber(jab_value, cross_value, hook_value, uppercut_value);
 
   data_array.push(outputGesture);
-  console.log(data_array);
 
-  let outputGesture21 = data_array[0];
+  let outputGesture21 = data_array[20];
   document.getElementById('punch-type').textContent = outputGesture21;
-  data_array.splice(0,data_array.length);
+  data_array.splice(0,1);
+
+  let previous_gesture = 'oobla';
 
 
-
-  if (outputGesture == 'jab'){
-    setTimeout(function(){ jab_count++}, 500);
-  } else if (outputGesture == 'cross'){
-    setTimeout(function(){ cross_count++;}, 500);
-  } else if (outputGesture == 'hook'){
-    setTimeout(function(){ hook_count++ }, 500);
-  } else if(outputGesture == 'uppercut'){
-    setTimeout(function(){ uppercut_count++;}, 500);
+  if (outputGesture21 == 'jab'){
+    setTimeout(function(){ jab_count = jab_count + 1/20;}, 100)
+  } else if (outputGesture21 == 'cross'){
+    setTimeout(function(){ cross_count = cross_count + 1/20;}, 100);
+  } else if (outputGesture21 == 'hook'){
+    setTimeout(function(){ hook_count = hook_count + 1/20; }, 100);
+  } else if(outputGesture21 == 'uppercut'){
+    setTimeout(function(){ uppercut_count = uppercut_count + 1/20;}, 100);
   }
+
+  previous_gesture = outputGesture21;
 
 
   console.log("I think this was a: " + outputGesture21);
@@ -79,8 +85,6 @@ function serialEvent() {
   // console.log("cross_value: " + cross_value);
   // console.log("hook_value: " + hook_value);
   // console.log("uppercut_value: " + uppercut_value);
-
-  // data_array.splice(0,data_array.length);
 
 }
 
@@ -103,10 +107,16 @@ function largestNumber(num1, num2, num3, num4) {
 }
 
 function draw() {
-  background(0);
-  fill(255);
-  text("Jab count: " + jab_count, 30, 30);
-  text("Cross count: " + cross_count, 30, 80);
-  text("Hook count: " + hook_count, 30, 130);
-  text("Uppercut count: " + uppercut_count, 30, 180);
+  background(255);
+  fill(0);
+  textSize(24);
+  text("Jab count: " + floor(jab_count), 30, 30);
+  text("Cross count: " + floor(cross_count), 30, 80);
+  text("Hook count: " + floor(hook_count), 30, 130);
+  text("Uppercut count: " + floor(uppercut_count), 30, 180);
+}
+
+function serialError(){
+  console.error("Something went wrong");
+  alert('Serial communication broken, initiate debug protocol');
 }
