@@ -2,14 +2,22 @@
 <html>
 
 <head>
-  <title>Getting Started with p5.ble.js</title>
+  <title>Punch Punch Revolution</title>
+  <link rel="shortcut icon" href="./img/favicon.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5.serialserver@0.0.28/lib/p5.serialport.js"></script>
+   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-  <p style="font-size: 40px;">You threw a <span id="punch-type"><span></p>
+
   <script src="./js/connect.js"></script>
+  <p style="font-size: 40px;">You threw a <span style="text-decoration: underline;" id="punch-type"><span></p>
+    <p style="font-size: 24px;">Jab count: <span id="jab"><span></p>
+      <p style="font-size: 24px;">Hook count: <span id="hook"><span></p>
+        <p style="font-size: 24px;">Uppercut count: <span id="uppercut"><span></p>
+  <!-- <progress id="myProgress" value="75" max="100"></progress> -->
+  <div id="graph-wrapper"></div>
 </body>
 </html>
