@@ -1,32 +1,57 @@
-var serial; // variable to hold an instance of the serialport library
-var portName = '/dev/tty.usbmodem14101'; // fill in your serial port name here
-var inData;
+var serial;
+var portName = '/dev/tty.usbmodem14201';
+var inData, canvas;
 var jab_value, cross_value, hook_value, uppercut_value;
 let jab_count = 0;
 let cross_count = 0;
 let hook_count = 0;
 let uppercut_count = 0;
 let data_array = [];
+let jab_target = 10;
+let hook_target = 5;
+let uppercut_target = 7;
+let action_music;
+let gif;
 
 let colors = ['#E67701', '#D84C6F', '#794AEF', '#1291D0'];
 let lightColors = ['#FFECE2', '#FFE9EC', '#F1F0FF', '#E2F5FF'];
 
+function preload() {
+ action_music = loadSound('./audio/blue-monday.mp3');
+}
+
 function setup() {
-  noCanvas();
+  console.log("action_music loaded");
   for (var i = 0; i < 21; i++) data_array[i] = 'pav';
 
   serial = new p5.SerialPort(); // make a new instance of the serialport library
   serial.on('list', printList); // set a callback function for the serialport list event
 
-  // createCanvas(400, 400);
+  // canvas = createCanvas(windowWidth / 2, windowHeight);
+  // canvas.position(windowWidth / 2, 0);
+  canvas = createCanvas(windowWidth, 200);
+  canvas.position(0, windowHeight- 250);
   // serial.on('connected', serverConnected); // callback for connecting to the server
   // serial.on('open', portOpen);        // callback for the port opening
   serial.on('data', serialEvent); // callback for when new data arrives
   serial.on('error', serialError); // callback for errors
-  // serial.on('close', portClose);      // callback for the port closing
-  //
+  // serial.on('close', portClose);
   serial.list(); // list the serial ports
   serial.open(portName); // open a serial port
+
+  togglePlaying();
+  // setTimeout(togglePlaying, 300);
+  gif = document.getElementById('boxing-gif')
+  gif.src = 'https://media.giphy.com/media/26tPrcX6EfSj5N0HK/giphy.gif';
+}
+
+
+function togglePlaying() {
+ if (!action_music.isPlaying()) {
+   // action_music.play();
+   action_music.loop();
+ }
+
 }
 
 // get the list of ports:
@@ -67,7 +92,8 @@ function serialEvent() {
   if (outputGesture21 == 'jab') {
     setTimeout(function() {
       jab_count = jab_count + 1 / 20;
-      document.getElementById('jab').textContent = floor(jab_count) || 0;
+      document.getElementById('punch-type').style.textDecorationColor = "#f50057";
+      gif.src = 'https://media.giphy.com/media/iIpfUUTOdEdqf2lzlc/giphy.gif';
     }, 100)
   } else if (outputGesture21 == 'cross') {
     setTimeout(function() {
@@ -76,12 +102,14 @@ function serialEvent() {
   } else if (outputGesture21 == 'hook') {
     setTimeout(function() {
       hook_count = hook_count + 1 / 20;
-      document.getElementById('hook').textContent = floor(hook_count) || 0;
+      gif.src = 'https://media.giphy.com/media/l41lIUvOqOtlGjpwQ/giphy.gif';
+    document.getElementById('punch-type').style.textDecorationColor = "#00c853";
     }, 100);
   } else if (outputGesture21 == 'uppercut') {
     setTimeout(function() {
       uppercut_count = uppercut_count + 1 / 20;
-      document.getElementById('uppercut').textContent = floor(uppercut_count) || 0;
+      gif.src = 'https://media.giphy.com/media/64MtWNuafNhZk62sXF/giphy.gif';
+document.getElementById('punch-type').style.textDecorationColor = "#3d5afe";
     }, 100);
   }
 
@@ -115,17 +143,46 @@ function largestNumber(num1, num2, num3, num4) {
   }
 }
 
-// function draw() {
-//   background(220);
-//   fill(0);
-//   textSize(24);
-//   text("Jab count: " + floor(jab_count), 0, 30);
-//   // text("Cross count: " + floor(cross_count), 30, 80);
-//   text("Hook count: " + floor(hook_count), 0, 80);
-//   text("Uppercut count: " + floor(uppercut_count), 0, 130);
-// }
+function draw() {
+  background(0);
+  noStroke();
+  textSize(20);
+  textFont('Poppins');
+
+  let jab_width = map(jab_count, 0, jab_target, 10, 320);
+  let hook_width = map(hook_count, 0, hook_target, 10, 320);
+  let uppercut_width = map(uppercut_count, 0, uppercut_target, 10, 320);
+
+  // Jab data
+  fill(255);
+  text("Jabs thrown: " + floor(jab_count) + " / " + jab_target, 20, 64);
+  fill(120, 80);
+  rect(20, 84, 320, 48, 4);
+  fill(245,0,87);
+  rect(20, 84, jab_width, 48, 4);
+
+  // Hook Data
+  fill(255);
+  text("Hooks thrown: " + floor(hook_count) + " / " + hook_target, 420,64);
+  fill(120, 80);
+  rect(420, 84, 320, 48, 4);
+  fill(0,200,83);
+  rect(420, 84, hook_width, 48, 4);
+
+  // Uppercut data
+  fill(255);
+  text("Uppercuts thrown: " + floor(uppercut_count) + " / " + uppercut_target, 820, 64);
+  fill(120, 80);
+  rect(820, 84, 320, 48, 4);
+  fill(61,90,254);
+  rect(820, 84, uppercut_width, 48, 4);
+
+  // if(jab_count > 0 || hook_count > 0 || uppercut_count > 0){
+  //   togglePlaying();
+  // }
+}
 
 function serialError() {
   console.error("Something went wrong");
-  alert('Serial communication broken, initiate debug protocol');
+  // alert('Serial communication broken, initiate debug protocol');
 }
