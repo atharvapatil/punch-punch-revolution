@@ -12,9 +12,7 @@ let hook_target = 5;
 let uppercut_target = 7;
 let action_music;
 let gif;
-
-let colors = ['#E67701', '#D84C6F', '#794AEF', '#1291D0'];
-let lightColors = ['#FFECE2', '#FFE9EC', '#F1F0FF', '#E2F5FF'];
+let time_remaining = 90;
 
 function preload() {
  action_music = loadSound('./audio/blue-monday.mp3');
@@ -153,33 +151,68 @@ function draw() {
   let hook_width = map(hook_count, 0, hook_target, 10, 320);
   let uppercut_width = map(uppercut_count, 0, uppercut_target, 10, 320);
 
+  if(jab_width > 320){
+    jab_width = 320;
+  }
+
+  if(hook_width > 320){
+    hook_width = 320;
+  }
+
+  if(uppercut_width > 320){
+    uppercut_width = 320;
+  }
+
   // Jab data
   fill(255);
   text("Jabs thrown: " + floor(jab_count) + " / " + jab_target, 20, 64);
   fill(120, 80);
-  rect(20, 84, 320, 48, 4);
+  rect(20, 84, 320, 40, 2);
   fill(245,0,87);
-  rect(20, 84, jab_width, 48, 4);
+  rect(20, 84, jab_width, 40, 2);
 
   // Hook Data
   fill(255);
   text("Hooks thrown: " + floor(hook_count) + " / " + hook_target, 420,64);
   fill(120, 80);
-  rect(420, 84, 320, 48, 4);
+  rect(420, 84, 320, 40, 2);
   fill(0,200,83);
-  rect(420, 84, hook_width, 48, 4);
+  rect(420, 84, hook_width, 40, 2);
 
   // Uppercut data
   fill(255);
   text("Uppercuts thrown: " + floor(uppercut_count) + " / " + uppercut_target, 820, 64);
   fill(120, 80);
-  rect(820, 84, 320, 48, 4);
+  rect(820, 84, 320, 40, 2);
   fill(61,90,254);
-  rect(820, 84, uppercut_width, 48, 4);
+  rect(820, 84, uppercut_width, 40, 2);
+
+  //Timer
+  let mapped_time = map(time_remaining, 90, 0, width - 40, 0);
+  fill(255, 220);
+  textSize(16);
+  text("Time remaining " + time_remaining , 20, 180);
+  fill(255, 196, 0);
+  rect(20, 190, mapped_time, 10, 2);
+
+  if( frameCount % 60 === 0 && time_remaining > 0){
+    time_remaining--;
+  }
+
+
 
   // if(jab_count > 0 || hook_count > 0 || uppercut_count > 0){
   //   togglePlaying();
   // }
+
+  if (jab_count >= 10 && hook_count >= 5 && uppercut_count >= 7){
+    fill(255);
+    text("Congratulations, now wait for Atharva to program more levels", 20, 150);
+  }
+  if (time_remaining == 0){
+    fill(255);
+    text("Oops times up. Better luck next time", 20, 150);
+  }
 }
 
 function serialError() {
