@@ -114,7 +114,7 @@ document.getElementById('punch-type').style.textDecorationColor = "#3d5afe";
   previous_gesture = outputGesture21;
 
 
-  console.log("I think this was a: " + outputGesture21);
+  // console.log("I think this was a: " + outputGesture21);
   // document.getElementById('punch-type').textContent = outputGesture21;
   // console.log("jab_value: " + jab_value);
   // console.log("cross_value: " + cross_value);
@@ -207,7 +207,7 @@ function draw() {
 
   if (jab_count >= 10 && hook_count >= 5 && uppercut_count >= 7){
     fill(255);
-    text("Congratulations, now wait for Atharva to program more levels", 20, 150);
+    text("Congratulations, now wait for Atharva to program more levels", width/2, 150);
   }
   if (time_remaining == 0){
     fill(255);
