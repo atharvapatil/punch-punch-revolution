@@ -27,8 +27,8 @@ function setup() {
 
   // canvas = createCanvas(windowWidth / 2, windowHeight);
   // canvas.position(windowWidth / 2, 0);
-  canvas = createCanvas(windowWidth, 200);
-  canvas.position(0, windowHeight- 250);
+  canvas = createCanvas(windowWidth, 550);
+  canvas.position(0, windowHeight- 550);
   // serial.on('connected', serverConnected); // callback for connecting to the server
   // serial.on('open', portOpen);        // callback for the port opening
   serial.on('data', serialEvent); // callback for when new data arrives
@@ -37,11 +37,13 @@ function setup() {
   serial.list(); // list the serial ports
   serial.open(portName); // open a serial port
 
-  togglePlaying();
+  // togglePlaying();
   // setTimeout(togglePlaying, 300);
   gif = document.getElementById('boxing-gif')
   gif.src = 'https://media.giphy.com/media/26tPrcX6EfSj5N0HK/giphy.gif';
+
 }
+
 
 
 function togglePlaying() {
@@ -89,23 +91,23 @@ function serialEvent() {
 
   if (outputGesture21 == 'jab') {
     setTimeout(function() {
-      jab_count = jab_count + 1 / 20;
+      jab_count = jab_count + 1 / 19;
       document.getElementById('punch-type').style.textDecorationColor = "#f50057";
       gif.src = 'https://media.giphy.com/media/iIpfUUTOdEdqf2lzlc/giphy.gif';
     }, 100)
   } else if (outputGesture21 == 'cross') {
     setTimeout(function() {
-      cross_count = cross_count + 1 / 20;
+      cross_count = cross_count + 1 / 19;
     }, 100);
   } else if (outputGesture21 == 'hook') {
     setTimeout(function() {
-      hook_count = hook_count + 1 / 20;
+      hook_count = hook_count + 1 / 19;
       gif.src = 'https://media.giphy.com/media/l41lIUvOqOtlGjpwQ/giphy.gif';
     document.getElementById('punch-type').style.textDecorationColor = "#00c853";
     }, 100);
   } else if (outputGesture21 == 'uppercut') {
     setTimeout(function() {
-      uppercut_count = uppercut_count + 1 / 20;
+      uppercut_count = uppercut_count + 1 / 19;
       gif.src = 'https://media.giphy.com/media/64MtWNuafNhZk62sXF/giphy.gif';
 document.getElementById('punch-type').style.textDecorationColor = "#3d5afe";
     }, 100);
@@ -144,75 +146,87 @@ function largestNumber(num1, num2, num3, num4) {
 function draw() {
   background(0);
   noStroke();
-  textSize(20);
+  textSize(32);
   textFont('Poppins');
-
-  let jab_width = map(jab_count, 0, jab_target, 10, 320);
-  let hook_width = map(hook_count, 0, hook_target, 10, 320);
-  let uppercut_width = map(uppercut_count, 0, uppercut_target, 10, 320);
-
-  if(jab_width > 320){
-    jab_width = 320;
-  }
-
-  if(hook_width > 320){
-    hook_width = 320;
-  }
-
-  if(uppercut_width > 320){
-    uppercut_width = 320;
-  }
-
-  // Jab data
-  fill(255);
-  text("Jabs thrown: " + floor(jab_count) + " / " + jab_target, 20, 64);
-  fill(120, 80);
-  rect(20, 84, 320, 40, 2);
-  fill(245,0,87);
-  rect(20, 84, jab_width, 40, 2);
-
-  // Hook Data
-  fill(255);
-  text("Hooks thrown: " + floor(hook_count) + " / " + hook_target, 420,64);
-  fill(120, 80);
-  rect(420, 84, 320, 40, 2);
-  fill(0,200,83);
-  rect(420, 84, hook_width, 40, 2);
-
-  // Uppercut data
-  fill(255);
-  text("Uppercuts thrown: " + floor(uppercut_count) + " / " + uppercut_target, 820, 64);
-  fill(120, 80);
-  rect(820, 84, 320, 40, 2);
-  fill(61,90,254);
-  rect(820, 84, uppercut_width, 40, 2);
-
-  //Timer
-  let mapped_time = map(time_remaining, 90, 0, width - 40, 0);
-  fill(255, 220);
-  textSize(16);
-  text("Time remaining " + time_remaining , 20, 180);
-  fill(255, 196, 0);
-  rect(20, 190, mapped_time, 10, 2);
-
-  if( frameCount % 60 === 0 && time_remaining > 0){
-    time_remaining--;
-  }
+  textAlign(LEFT);
+  // angleMode(DEGREES);
 
 
+  renderGameCanvas();
 
-  // if(jab_count > 0 || hook_count > 0 || uppercut_count > 0){
-  //   togglePlaying();
-  // }
-
-  if (jab_count >= 10 && hook_count >= 5 && uppercut_count >= 7){
+  
+  if (jab_count >= jab_target && hook_count >= hook_target && uppercut_count >= uppercut_target){
     fill(255);
-    text("Congratulations, now wait for Atharva to program more levels", width/2, 150);
+    textSize(40);
+    textAlign(CENTER);
+    text("Congratulations, you completed the challenge", width/2, height/2);
   }
-  if (time_remaining == 0){
+
+}
+
+function renderGameCanvas(){
+
+    let jab_width = map(jab_count, 0, jab_target, 10, 320);
+    let hook_width = map(hook_count, 0, hook_target, 10, 320);
+    let uppercut_width = map(uppercut_count, 0, uppercut_target, 10, 320);
+
+    if(jab_width > 740){
+      jab_width = 740;
+    }
+
+    if(hook_width > 740){
+      hook_width = 740;
+    }
+
+    if(uppercut_width > 740){
+      uppercut_width = 740;
+    }
+
+    // Jab data
     fill(255);
-    text("Oops times up. Better luck next time", 20, 150);
-  }
+    text("Jabs thrown : " + floor(jab_count) + " / " + jab_target, 48, 220);
+    fill(120, 80);
+    rect(48, 84, 740, 80, 2);
+    fill(245,0,87);
+    rect(48, 84, jab_width, 80, 2);
+
+    // Hook Data
+    fill(255);
+    text("Hooks thrown : " + floor(hook_count) + " / " + hook_target, 840, 220);
+    fill(120, 80);
+    rect(840, 84, 740, 80, 2);
+    fill(0,200,83);
+    rect(840, 84, hook_width, 80, 2);
+
+    // Uppercut data
+    fill(255);
+    text("Uppercuts thrown : " + floor(uppercut_count) + " / " + uppercut_target, 1630, 220);
+    fill(120, 80);
+    rect(1630, 84, 740, 80, 2);
+    fill(61,90,254);
+    rect(1630, 84, uppercut_width, 80, 2);
+
+    //Timer
+    let mapped_time = map(time_remaining, 90, 0, width - 120, 0);
+
+    fill(255, 196, 0);
+    rect(40, height - 90, mapped_time, 60, 2);
+    // rect(40, height - 90, 1200 - frameCount*(1/60) , 60, 2);
+    fill(0, 220);
+    textSize(24);
+    text(time_remaining + " Seconds left", 56, height - 50);
+
+    if( frameCount % 60 === 0 && time_remaining > 0){
+      time_remaining--;
+    }
+
+    if (time_remaining == 0){
+      fill(255, 61, 0);
+      textSize(50);
+      textAlign(CENTER);
+      text("Oops times up. Better luck next time", width/2, height/2 + 70);
+    }
+
 }
 
 function serialError() {
