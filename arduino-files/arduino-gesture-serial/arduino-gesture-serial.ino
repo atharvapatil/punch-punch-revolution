@@ -36,7 +36,6 @@ byte tensorArena[tensorArenaSize];
 // array to map gesture index to a name
 const char* GESTURES[] = {
   "jab",
-  "cross",
   "hook",
   "uppercut"
 };
@@ -44,7 +43,6 @@ const char* GESTURES[] = {
 #define NUM_GESTURES (sizeof(GESTURES) / sizeof(GESTURES[0]))
 
 float jab_old = 0;
-float cross_old = 0;
 float hook_old = 0;
 float uppercut_old = 0;
 
@@ -139,30 +137,21 @@ void loop() {
           return;
         }
 
-
-
         float jab_value = tflOutputTensor->data.f[0];
-        float cross_value = tflOutputTensor->data.f[1];
-        float hook_value = tflOutputTensor->data.f[2];
-        float uppercut_value = tflOutputTensor->data.f[3];
+        float hook_value = tflOutputTensor->data.f[1];
+        float uppercut_value = tflOutputTensor->data.f[2];
         float highest_value = 0;
-        int web_output = 0;
-        String string_value = "Hello String";
 
 
-
-        if (jab_value != jab_old && cross_value != cross_old && hook_value != hook_old && uppercut_value != uppercut_old) {
+//        if (jab_value != jab_old  && hook_value != hook_old && uppercut_value != uppercut_old) {
           Serial.print(jab_value);
-          Serial.print(",");
-          Serial.print(cross_value);
           Serial.print(",");
           Serial.print(hook_value);
           Serial.print(",");
           Serial.println(uppercut_value);
-        }
+//        }
 
         jab_old = jab_value;
-        cross_old = cross_value;
         hook_old = hook_value;
         uppercut_old = uppercut_value;
 

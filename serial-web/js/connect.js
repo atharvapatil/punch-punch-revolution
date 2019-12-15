@@ -44,8 +44,6 @@ function setup() {
 
 }
 
-
-
 function togglePlaying() {
  if (!action_music.isPlaying()) {
    // action_music.play();
@@ -70,15 +68,14 @@ function serialEvent() {
 
   if (inString.length > 0) {
     var sensors = split(inString, ','); // split the string on the commas
-    if (sensors.length > 3) { // if there are three elements
+    if (sensors.length > 1) { // if there are three elements
       jab_value = sensors[0];
-      cross_value = sensors[1];
-      hook_value = sensors[2];
-      uppercut_value = sensors[3];
+      hook_value = sensors[1];
+      uppercut_value = sensors[2];
     }
   }
 
-  let outputGesture = largestNumber(jab_value, cross_value, hook_value, uppercut_value);
+  let outputGesture = largestNumber(jab_value, hook_value, uppercut_value);
 
   data_array.push(outputGesture);
 
@@ -95,10 +92,6 @@ function serialEvent() {
       document.getElementById('punch-type').style.textDecorationColor = "#f50057";
       gif.src = 'https://media.giphy.com/media/iIpfUUTOdEdqf2lzlc/giphy.gif';
     }, 100)
-  } else if (outputGesture21 == 'cross') {
-    setTimeout(function() {
-      cross_count = cross_count + 1 / 19;
-    }, 100);
   } else if (outputGesture21 == 'hook') {
     setTimeout(function() {
       hook_count = hook_count + 1 / 19;
@@ -115,30 +108,19 @@ document.getElementById('punch-type').style.textDecorationColor = "#3d5afe";
 
   previous_gesture = outputGesture21;
 
-
-  // console.log("I think this was a: " + outputGesture21);
-  // document.getElementById('punch-type').textContent = outputGesture21;
-  // console.log("jab_value: " + jab_value);
-  // console.log("cross_value: " + cross_value);
-  // console.log("hook_value: " + hook_value);
-  // console.log("uppercut_value: " + uppercut_value);
-
 }
 
-function largestNumber(num1, num2, num3, num4) {
+function largestNumber(num1, num2, num3) {
 
   let jab = 'jab';
-  let cross = 'cross';
   let hook = 'hook';
   let uppercut = 'uppercut';
 
-  if (num1 > num2 && num1 > num3 && num1 > num4) {
+  if (num1 > num2 && num1 > num3) {
     return jab
-  } else if (num2 > num1 && num2 > num3 && num2 > num4) {
-    return cross
-  } else if (num3 > num1 && num3 > num2 && num3 > num4) {
+  } else if (num2 > num1 && num2 > num3) {
     return hook
-  } else if (num4 > num1 && num4 > num2 && num4 > num3) {
+  } else if (num3 > num1 && num3 > num2) {
     return uppercut
   }
 }
@@ -154,7 +136,7 @@ function draw() {
 
   renderGameCanvas();
 
-  
+
   if (jab_count >= jab_target && hook_count >= hook_target && uppercut_count >= uppercut_target){
     fill(255);
     textSize(40);
@@ -166,9 +148,9 @@ function draw() {
 
 function renderGameCanvas(){
 
-    let jab_width = map(jab_count, 0, jab_target, 10, 320);
-    let hook_width = map(hook_count, 0, hook_target, 10, 320);
-    let uppercut_width = map(uppercut_count, 0, uppercut_target, 10, 320);
+    let jab_width = map(jab_count, 0, jab_target, 10, 740);
+    let hook_width = map(hook_count, 0, hook_target, 10, 740);
+    let uppercut_width = map(uppercut_count, 0, uppercut_target, 10, 740);
 
     if(jab_width > 740){
       jab_width = 740;
