@@ -7,9 +7,9 @@ let cross_count = 0;
 let hook_count = 0;
 let uppercut_count = 0;
 let data_array = [];
-let jab_target = 10;
-let hook_target = 5;
-let uppercut_target = 7;
+let jab_target = 7;
+let hook_target = 7;
+let uppercut_target = 5;
 let action_music;
 let gif;
 let time_remaining = 90;
@@ -80,6 +80,7 @@ function serialEvent() {
   data_array.push(outputGesture);
 
   let outputGesture21 = data_array[20];
+  // console.log(outputGesture21);
   document.getElementById('punch-type').textContent = outputGesture21;
   data_array.splice(0, 1);
 
@@ -88,19 +89,19 @@ function serialEvent() {
 
   if (outputGesture21 == 'jab') {
     setTimeout(function() {
-      jab_count = jab_count + 1 / 19;
+      jab_count = jab_count + 1 / 16;
       document.getElementById('punch-type').style.textDecorationColor = "#f50057";
       gif.src = 'https://media.giphy.com/media/iIpfUUTOdEdqf2lzlc/giphy.gif';
     }, 100)
   } else if (outputGesture21 == 'hook') {
     setTimeout(function() {
-      hook_count = hook_count + 1 / 19;
+      hook_count = hook_count + 1 / 16;
       gif.src = 'https://media.giphy.com/media/l41lIUvOqOtlGjpwQ/giphy.gif';
     document.getElementById('punch-type').style.textDecorationColor = "#00c853";
     }, 100);
   } else if (outputGesture21 == 'uppercut') {
     setTimeout(function() {
-      uppercut_count = uppercut_count + 1 / 19;
+      uppercut_count = uppercut_count + 1 / 16;
       gif.src = 'https://media.giphy.com/media/64MtWNuafNhZk62sXF/giphy.gif';
 document.getElementById('punch-type').style.textDecorationColor = "#3d5afe";
     }, 100);
@@ -213,5 +214,5 @@ function renderGameCanvas(){
 
 function serialError() {
   console.error("Something went wrong");
-  // alert('Serial communication broken, initiate debug protocol');
+  alert('Serial communication broken, initiate debug protocol');
 }
