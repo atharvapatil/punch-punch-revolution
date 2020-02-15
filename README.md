@@ -1,5 +1,7 @@
 # Punch punch revolution
 
+### Notes for Noah
+- The serial-web folder has the code components which I presented with in the winter show.
 
 ### “Currently showing at the ITP winter show 2019, New York”
 
